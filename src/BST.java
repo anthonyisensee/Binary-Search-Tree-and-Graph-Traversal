@@ -52,17 +52,20 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
     }
 
-    // is the symbol table empty?
+    /** Check to see if BST is empty */
     public boolean isEmpty() {
         return size() == 0;
     }
 
-    // return number of key-value pairs in BST
+    /** Return size of BST */
     public int size() {
         return size(root);
     }
 
-    // return number of key-value pairs in BST rooted at x
+    /**
+     * Return number of key-value pairs in BST at a certain root.
+     * @param x the Node to examine as the root.
+     */
     private int size(Node x) {
         if (x == null) return 0;
         else return x.N;
@@ -73,19 +76,29 @@ public class BST<Key extends Comparable<Key>, Value> {
     * return null if not found
     */
 
-    // does there exist a key-value pair with given key?
+    /**
+     * Checks the search tree to see if there exists a value with a given key.
+     * does there exist a key-value pair with given key?
+     */
     public boolean contains(Key key) {
         return get(key) != null;
     }
 
-    // return value associated with the given key, or null if no such key exists
+    /** Return a value associated with a given key in the full BST, or null if no such key exists. */
     public Value get(Key key) {
         return get(root, key);
     }
 
+    /**
+     * Retrieve a value from any root given a certain key.
+     * @param x Root of tree (or subtree) to begin searching.
+     * @param key Key to search for.
+     * @return Value from given key (or null if nonexistent?).
+     */
     private Value get(Node x, Key key) {
         if (x == null) return null;
         int cmp = key.compareTo(x.key);
+        // Recursively searches until it finds correct key, then returns value at that node.
         if      (cmp < 0) return get(x.left, key);
         else if (cmp > 0) return get(x.right, key);
         else              return x.val;
@@ -95,7 +108,6 @@ public class BST<Key extends Comparable<Key>, Value> {
     * Insert key-value pair into BST
     * If key already exists, update with new value
     */
-
     public void put(Key key, Value val) {
         if (val == null) { delete(key); return; }
         root = put(root, key, val);
@@ -176,7 +188,34 @@ public class BST<Key extends Comparable<Key>, Value> {
     private Node min(Node x) { 
         if (x.left == null) return x; 
         else                return min(x.left); 
-    } 
+    }
+
+    /** Iteratively finds the minimum key in the BST. */
+    public Key iterativeMin() {
+        if (isEmpty()) return null;
+        return iterativeMin(root).key;
+    }
+
+    /**
+     * Returns the node with the minimum key at the specified root.
+     * @param x Root to search.
+     * @return Node containing specified key or null if root is empty.
+     */
+    private Node iterativeMin(Node x) {
+
+        // if empty
+        if (x == null)
+            return null;
+        // if not empty
+        else {
+            // continue along all left nodes until empty node is found, then stop
+            while (x.left != null) {
+                x = x.left;
+            }
+            // return node x that must contain minimum key
+            return x;
+        }
+    }
 
     public Key max() {
         if (isEmpty()) return null;
@@ -186,7 +225,34 @@ public class BST<Key extends Comparable<Key>, Value> {
     private Node max(Node x) { 
         if (x.right == null) return x; 
         else                 return max(x.right); 
-    } 
+    }
+
+    /** Iteratively finds the maximum key in the BST. */
+    public Key iterativeMax() {
+        if (isEmpty()) return null;
+        return iterativeMax(root).key;
+    }
+
+    /**
+     * Returns the node with the minimum key at the specified root.
+     * @param x Root to search.
+     * @return Node containing specified key or null if root is empty.
+     */
+    private Node iterativeMax(Node x) {
+
+        // if empty
+        if (x == null)
+            return null;
+            // if not empty
+        else {
+            // continue along all right nodes until an empty node is found, then stop.
+            while (x.right != null) {
+                x = x.right;
+            }
+            // return node x that must contain minimum key
+            return x;
+        }
+    }
 
     public Key floor(Key key) {
         Node x = floor(root, key);
@@ -282,8 +348,13 @@ public class BST<Key extends Comparable<Key>, Value> {
     }
 
 
-    // height of this BST (one-node tree has height 0)
+    /** Returns the height of the BST. */
     public int height() { return height(root); }
+
+    /**
+     * Returns the height of the BST at root x.
+     * @param x The root to determine height of.
+     */
     private int height(Node x) {
         if (x == null) return -1;
         return 1 + Math.max(height(x.left), height(x.right));
@@ -353,6 +424,22 @@ public class BST<Key extends Comparable<Key>, Value> {
     * Test client
     */
     public static void main(String[] args) { 
+
+        String[] strings = {"g", "f", "r", "m", "t", "s", "w", "v", "b", "c", "e", "a"};
+        int[] key = {7, 6, 18, 13, 20, 19, 23, 22, 2, 3, 5, 1};
+
+        BST<String, Integer> bst = new BST<String, Integer>();
+        for(String s : strings) {
+            int i = 0;
+            bst.put(s, key[i]);
+            i++;
+        }
+        System.out.println("Iterative Min: " + bst.iterativeMin());
+        System.out.println("Iterative Max: " + bst.iterativeMax());
+
+        int i = 0;
+
+        /*
         BST<String, Integer> st = new BST<String, Integer>();
         for (int i = 0; !StdIn.isEmpty(); i++) {
             String key = StdIn.readString();
@@ -366,5 +453,6 @@ public class BST<Key extends Comparable<Key>, Value> {
 
         for (String s : st.keys())
             StdOut.println(s + " " + st.get(s));
+        */
     }
 }
