@@ -23,6 +23,7 @@
  */
 
 import java.util.NoSuchElementException;
+import java.util.Stack;
 
 public class BST<Key extends Comparable<Key>, Value> {
 
@@ -419,23 +420,128 @@ public class BST<Key extends Comparable<Key>, Value> {
         return true;
     }
 
+    /** Additional Functionality added by Anthony Isensee */
 
-   /**
+    /**
+     * Prints a path from the root to the node with Key key.
+     * @param key The key being searched.
+     * TODO: Modify to follow assignment guidelines.
+     */
+    public void printPath(Key key) {
+        // check to see if bst contains the key at all. If not, let user know.
+        if (recursivePrintPath(root, key)) {
+            System.out.println("Supplied key (" + key + ") is not in the binary search tree.");
+        }
+        // if it does contain the key, use recursivePrintPath to print path
+        else {
+            System.out.print("Key was found. Path from Root (" + root.key + ") to Key (" + key + ") is : ");
+            boolean somethingIsNotBroken = recursivePrintPath(root, key);
+        }
+    }
+
+    /**
+     * Returns true if key k is found among one of x's descendents.
+     * @param x The node to be searched.
+     * @param k The key to search for.
+     * @return true if key is among x's descendents, false if it is not.
+     * TODO: Modify to follow assignment guidelines.
+     */
+    private boolean recursivePrintPath(Node x, Key k) {
+
+        // if x is null we are working with an empty tree. Thus, return false.
+        if (x == null) {
+            return false;
+        }
+        // compare our two keys using the methodology already written into this class
+        int cmp = k.compareTo(x.key);
+        // recursively searches until it finds correct key
+        if      (cmp < 0) {
+            // if we're headed down the left side, print node's key and continue
+            System.out.print(x.key + " -> ");
+            return recursivePrintPath(x.left, k);
+        }
+        else if (cmp > 0) {
+            // if we're headed down the right side, print node's key and continue
+            System.out.print(x.key + " -> ");
+            return recursivePrintPath(x.right, k);
+        }
+        // if key not smaller or larger than key we're looking for (null case has already been eliminated), we've found it!
+        else {
+            // print final and found element
+            System.out.print(x.key);
+            System.out.println();
+            // finally, return true.
+            return true;
+        }
+    }
+
+    /**
+     * Prints the keys associated with all nodes at a certain depth.
+     * @param depth Depth of all keys to be printed.
+     */
+    public void printDepth(int depth) {
+        if (isEmpty()) {
+            System.out.println("Binary Search Tree is Empty, cannot print items at any depth.");
+        }
+        else {
+            System.out.print("Keys at Depth " + depth + ": ");
+            recursivePrintDepth(root, 0, depth);
+            System.out.println();
+        }
+    }
+
+    private void recursivePrintDepth(Node x, int depth, int targetDepth) {
+        if (x == null) {    // if node is null
+            // do nothing
+        }
+        else if (depth == targetDepth) { // if we've reached a node with the correct target depth
+            // print the key at the node
+            System.out.print(x.key + " ");
+        }
+        else if (depth < targetDepth) { // if we have yet to reach the target depth
+            // add one to depth we will now begin searching
+            ++depth;
+            // continue searching
+            recursivePrintDepth(x.left, depth, targetDepth);
+            recursivePrintDepth(x.right, depth, targetDepth);
+        }
+
+    }
+
+
+
+    /**
     * Test client
     */
     public static void main(String[] args) { 
 
-        String[] strings = {"g", "f", "r", "m", "t", "s", "w", "v", "b", "c", "e", "a"};
-        int[] key = {7, 6, 18, 13, 20, 19, 23, 22, 2, 3, 5, 1};
+        // keys to be placed in the binary search tree
+        String[] keys = {"g", "f", "r", "m", "t", "s", "w", "v", "b", "c", "e", "a"};
+        // values to be associated with each key based on alphabetical order
+        int[] values = {7, 6, 18, 13, 20, 19, 23, 22, 2, 3, 5, 1};
 
         BST<String, Integer> bst = new BST<String, Integer>();
-        for(String s : strings) {
+        for(String key : keys) {
             int i = 0;
-            bst.put(s, key[i]);
-            i++;
+            bst.put(key, values[i]);
+            i++;    // increment i so next loop places correct value
         }
-        System.out.println("Iterative Min: " + bst.iterativeMin());
-        System.out.println("Iterative Max: " + bst.iterativeMax());
+
+        System.out.println();
+        System.out.println("Minimum Key Found Iteratively: " + bst.iterativeMin());
+        System.out.println("Maximum Key Found Iteratively: " + bst.iterativeMax());
+        System.out.println();
+
+        bst.printPath("v");
+        //bst.printPath("e");
+        bst.printPath("h");
+
+        System.out.println();
+        bst.printDepth(0);
+        bst.printDepth(2);
+        bst.printDepth(4);
+        bst.printDepth(42);
+
 
         int i = 0;
 
