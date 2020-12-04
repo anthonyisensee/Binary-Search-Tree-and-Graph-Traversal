@@ -425,17 +425,16 @@ public class BST<Key extends Comparable<Key>, Value> {
     /**
      * Prints a path from the root to the node with Key key.
      * @param key The key being searched.
-     * TODO: Modify to follow assignment guidelines.
      */
     public void printPath(Key key) {
         // check to see if bst contains the key at all. If not, let user know.
-        if (recursivePrintPath(root, key)) {
-            System.out.println("Supplied key (" + key + ") is not in the binary search tree.");
+        if (recursivePrintPath(root, key) == true) {
+            // true/found key case of recursive function prints successful message.
+            // it is necessary to print from recursive function to get node -> root printout.
         }
-        // if it does contain the key, use recursivePrintPath to print path
-        else {
-            System.out.print("Key was found. Path from Root (" + root.key + ") to Key (" + key + ") is : ");
-            boolean somethingIsNotBroken = recursivePrintPath(root, key);
+        // if bst does not contain key, print not found message.
+        else {  // if (recursivePrintPath(root, key) == false)
+            System.out.println("The given key (" + key + ") is not in the binary search tree.");
         }
     }
 
@@ -443,36 +442,57 @@ public class BST<Key extends Comparable<Key>, Value> {
      * Returns true if key k is found among one of x's descendents.
      * @param x The node to be searched.
      * @param k The key to search for.
-     * @return true if key is among x's descendents, false if it is not.
-     * TODO: Modify to follow assignment guidelines.
+     * @return true if key is among x's descendents, false if it is not. If first function call returns true, will print
+     *         entire path from node to root.
      */
     private boolean recursivePrintPath(Node x, Key k) {
 
-        // if x is null we are working with an empty tree. Thus, return false.
-        if (x == null) {
-            return false;
-        }
-        // compare our two keys using the methodology already written into this class
+        // boolean to be used later in method and to be used to determine whether node is on path to searched key or not
+        boolean onPath = false;
+
+        // if x is null we are working with an empty tree or node. Return false to end this branch of recursion.
+        if (x == null) return false;
+
+        // compare our two keys using the methodology already written into contains method
         int cmp = k.compareTo(x.key);
-        // recursively searches until it finds correct key
-        if      (cmp < 0) {
-            // if we're headed down the left side, print node's key and continue
-            System.out.print(x.key + " -> ");
-            return recursivePrintPath(x.left, k);
+        // check left child
+        if (cmp < 0) {
+            onPath = recursivePrintPath(x.left, k);
         }
+        // check right child
         else if (cmp > 0) {
-            // if we're headed down the right side, print node's key and continue
-            System.out.print(x.key + " -> ");
-            return recursivePrintPath(x.right, k);
+            onPath = recursivePrintPath(x.right, k);
         }
-        // if key not smaller or larger than key we're looking for (null case has already been eliminated), we've found it!
-        else {
-            // print final and found element
-            System.out.print(x.key);
-            System.out.println();
-            // finally, return true.
+
+        // if current node
+        if (cmp == 0) {
+            // print found node
+            System.out.print("Path from Key (" + k + ") to Root (" + root.key + ") is: " + x.key + " -> ");
+            // return true as node has been found
             return true;
         }
+
+        // post-order traversal printing
+        // determine whether we should print the key from this node. Note that the else if simply eliminates the
+        // '->' arrow following the key when we've finally reached the root.
+        if (onPath && x != root) {  // if we're on the path but not yet at the root.
+            System.out.print(x.key + " -> ");
+        }
+        else if (onPath && x == root) { // if we're on the path and back at the root
+            System.out.print(x.key);
+            System.out.println();
+        }
+
+        // determine final return after printing
+        if (!onPath) {  // if we determined earlier that this node is not on the path to key k
+            return false;   // return false, indicating not to continue down this track
+        }
+        else if (onPath) {  // if we determined that this node IS on the path to key k
+            return true;    // return true to indicate that we should continue down this track
+        }
+
+        // to satisfy compiler :T (else if statement just above could be removed, but this preserves easy readability)
+        return false;
     }
 
     /**
@@ -513,7 +533,7 @@ public class BST<Key extends Comparable<Key>, Value> {
     /**
     * Test client
     */
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
 
         // keys to be placed in the binary search tree
         String[] keys = {"g", "f", "r", "m", "t", "s", "w", "v", "b", "c", "e", "a"};
