@@ -3,6 +3,7 @@
  *  Execution:    java BST
  *  Dependencies: StdIn.java StdOut.java Queue.java
  *  Data files:   http://algs4.cs.princeton.edu/32bst/tinyST.txt
+ *  Author(s): Source Code Creator, Anthony Isensee
  *
  *  A symbol table implemented with a binary search tree.
  *
@@ -420,7 +421,7 @@ public class BST<Key extends Comparable<Key>, Value> {
         return true;
     }
 
-    /** Additional Functionality added by Anthony Isensee */
+    /** Additional Functionality added by Anthony Isensee (in addition to iterativeMin and iterativeMax)*/
 
     /**
      * Prints a path from the root to the node with Key key.
@@ -500,6 +501,7 @@ public class BST<Key extends Comparable<Key>, Value> {
      * @param depth Depth of all keys to be printed.
      */
     public void printDepth(int depth) {
+
         if (isEmpty()) {
             System.out.println("Binary Search Tree is Empty, cannot print items at any depth.");
         }
@@ -508,6 +510,7 @@ public class BST<Key extends Comparable<Key>, Value> {
             recursivePrintDepth(root, 0, depth);
             System.out.println();
         }
+
     }
 
     private void recursivePrintDepth(Node x, int depth, int targetDepth) {
@@ -561,7 +564,6 @@ public class BST<Key extends Comparable<Key>, Value> {
         bst.printDepth(2);
         bst.printDepth(4);
         bst.printDepth(42);
-
 
         int i = 0;
 

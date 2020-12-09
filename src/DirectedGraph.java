@@ -3,9 +3,10 @@ import java.util.LinkedList;
 import java.util.Map.Entry;
 
 /**
- * @author Original Source Code Author, Anthony Isensee (changes made only for testing in public static void main method)
+ * DirectedGraph Class
+ * @author Original Source Code Creator, Anthony Isensee (conversion to directed graph)
  */
-public class UndirectedGraph {
+public class DirectedGraph {
     
     /** Edge object contains information about an edge to a given vertex */ 
     public class Edge {
@@ -14,15 +15,21 @@ public class UndirectedGraph {
         
         /** weight for the edge */
         public int weight = 0;
+
+        /** action to be taken to move along the edge */
+        public String action = "";
         
-        public Edge(String vLabel){
+        public Edge(String vLabel, String vAction){
             vertexLabel = vLabel;
+            action = vAction;
         }
         
         public Edge(String vLabel, int w){
             vertexLabel = vLabel;
             weight = w;
         }
+
+
     }
     
     /** Vertex object contains all of the relevant information for a vertex */
@@ -31,11 +38,13 @@ public class UndirectedGraph {
         public LinkedList<Edge> adjacencyList = new LinkedList<Edge>();
         /** label for the vertex */
         public String label = null;
-        
+
         /** used in BFS and DFS */
         public boolean discovered = false;
         public boolean visited = false;
         public String parent = null;
+        /** label for action to get to vertex */
+        public String parentAction = null;
         public int distance = Integer.MAX_VALUE;
         public int discoveryTime = 0;
         public int finishingTime = 0;
@@ -45,8 +54,8 @@ public class UndirectedGraph {
         }
         
         /** add an edge to the vertex with the given label */
-        public void addEdge(String vLabel){
-            adjacencyList.add(new Edge(vLabel));
+        public void addEdge(String vLabel, String vAction){
+            adjacencyList.add(new Edge(vLabel, vAction));
         }
         
         /** add a weighted edge to the vertex with the given label */
@@ -56,9 +65,13 @@ public class UndirectedGraph {
         
         /** output all of the vertices that this vertex has edges to */
         public void displayEdges() {
-            System.out.print("Edges to: ");
+            System.out.print("Edges: ");
             for (Edge e: adjacencyList){
+                System.out.print(e.action+" ");
                 System.out.print(e.vertexLabel+" ");
+            }
+            if(adjacencyList.isEmpty()) {
+                System.out.print("N/A");
             }
             System.out.println();
         }
@@ -75,25 +88,28 @@ public class UndirectedGraph {
     /** current finishing time. used by DFS */
     private int time = 0;
     
-    /** add the undirected edge (v,u) to the graph */
-    public void addEdge(String vLabel, String uLabel){
-        // add edge (v,u)
+    /** add the directed edge (v,u) to the graph along with the action that needs to be taken to make the move */
+    public void addEdge(String vLabel, String uLabel, String action){
+        // add edge (v,u,action)
         if (vertices.containsKey(vLabel)){
-            vertices.get(vLabel).addEdge(uLabel);
+            vertices.get(vLabel).addEdge(uLabel,action);
         } else {
             Vertex v = new Vertex(vLabel);
-            v.addEdge(uLabel);
+            v.addEdge(uLabel,action);
             vertices.put(vLabel, v);
         }
-        // add edge (u,v)
-        if (vertices.containsKey(uLabel)){
-            vertices.get(uLabel).addEdge(vLabel);
+    }
+
+    /** add a single vertex with no edges */
+    public void addVertex(String vLabel) {
+        if (vertices.containsKey(vLabel)){
+            // do nothing, vertex with no edges is already present
         } else {
-            Vertex u = new Vertex(uLabel);
-            u.addEdge(vLabel);
-            vertices.put(uLabel, u);
+            Vertex v = new Vertex(vLabel);
+            vertices.put(vLabel, v);
         }
     }
+
     
     /** output the vertices and their edges */
     public void display() {
@@ -147,10 +163,12 @@ public class UndirectedGraph {
             u.visited = false;        // has it been removed from the queue and explored? 
             u.distance = Integer.MAX_VALUE;   // distance from the root of the graph (vertex s)
             u.parent = null;          // parent in BFS tree of graph
+            u.parentAction = null;
         }
         
         s.discovered = true;
         s.distance = 0;
+        s.parentAction = null;
         
         // Create a queue of vertices to explore 
         LinkedList<Vertex> q = new LinkedList<Vertex>();
@@ -165,10 +183,12 @@ public class UndirectedGraph {
             // then add them to the back of the queue
             for(Edge e: u.adjacencyList){
                 Vertex v = vertices.get(e.vertexLabel);
-                if (v.discovered == false) {
+                // note that the v!=null will catch any vertices without edges leading away from them
+                if (v != null && v.discovered == false) {
                     v.discovered = true;       // vertex has now been discovered 
                     v.distance = u.distance + 1;
-                    v.parent = u.label;        
+                    v.parent = u.label;
+                    v.parentAction = e.action;
                     q.addLast(v);              // add new vertex to end of the queue    
                 }
             }
@@ -183,12 +203,12 @@ public class UndirectedGraph {
         Vertex v = vertices.get(vLabel);
         
         if (s == v) {
-            System.out.print(sLabel);
+            System.out.print("Start at " + sLabel);
         } else if (v.parent == null) {
             System.out.println("No path from "+s.label+" to "+v.label+" exists");
         } else {
             printPath(s.label, v.parent);
-            System.out.print(", "+v.label);
+            System.out.print(", "+ v.parentAction + " " +v.label);
         }
     }
     
@@ -200,6 +220,7 @@ public class UndirectedGraph {
             u.discovered = false;        // has the vertex been discovered?
             u.visited = false;           // has the vertex been fully explored?
             u.parent = null;             // parent in DFS tree in graph
+            u.parentAction = null;
         }
         
         time = 0;       // finishing time -- time stamp recorded when the vertex was completely explored
@@ -225,6 +246,7 @@ public class UndirectedGraph {
             if (v.discovered == false){
                 v.parent = u.label;
                 dfsVisit(v);
+                v.parentAction = u.parentAction;
             }
         }
         u.visited = true;
@@ -239,24 +261,31 @@ public class UndirectedGraph {
             u.discovered = false;
             u.visited = false;
             u.parent = null;
+            u.parentAction = null;
         }
         
         time = 0;
         Vertex u = vertices.get(sLabel);
         // begin DFS of graph starting at vertex with given label
-        dfsVisit(u);
+        dfsVisit(u); 
     }
 
     public static void main(String[] args) {
-        UndirectedGraph g = new UndirectedGraph();
 
-        g.addEdge("0", "1");
-        g.addEdge("1", "2");
+
+        DirectedGraph g = new DirectedGraph();
+
+        g.addEdge("0", "1", "east to");
+        g.addEdge("1", "2", "south to");
+        g.addEdge("1", "3", "east to");
+        //g.addVertex("3");
+        g.addVertex("2");   // note that this vertex must be added to the system so the algorithm can actually find it
 
         g.display();
         g.breadthFirstSearch("0");
         g.printPath("0", "2");
         System.out.println();
-    }
 
+
+    }
 }

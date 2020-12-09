@@ -1,0 +1,159 @@
+0,0
+east to
+1,0
+
+1,0
+east to
+2,0
+
+2,0
+east to
+3,0
+
+3,0
+south to
+3,1
+    first tangent
+3,1
+east to
+4,1
+
+4,1
+east to
+5,1
+
+5,1
+north to
+5,0
+    continue
+3,1
+south to
+3,2
+
+3,2
+west to
+2,2
+
+2,2
+west to
+1,2
+    second tangent
+1,2
+west to
+0,2
+    continue
+1,2
+south to
+1,3
+
+1,3
+south to
+1,4
+    third tangent
+1,4
+east to
+2,4
+
+2,4
+east to
+3,4
+
+3,4
+east to
+4,4
+
+4,4
+north to
+4,3
+
+4,3
+east to
+5,3
+
+5,3
+east to
+6,3
+
+6,3
+north to
+6,2
+
+6,2
+east to
+7,2
+
+7,2
+north to
+7,1
+
+7,1
+north to
+7,0
+    continue
+1,4
+south to
+1,5
+
+1,5
+west to
+0,5
+
+0,5
+south to
+0,6
+
+0,6
+south to
+0,7
+
+0,7
+east to
+1,7
+
+1,7
+east to
+2,7
+
+2,7
+north to
+2,6
+
+2,6
+east to
+3,6
+
+3,6
+east to
+4,6
+
+4,6
+east to
+5,6
+    fourth tangent
+5,6
+south to
+5,7
+    continue
+5,6
+north to
+5,5
+
+5,5
+east to
+6,5
+
+6,5
+east to
+7,5
+    fifth tangent
+7,5
+north to
+7,4
+    continue
+7,5
+south to
+7,6
+
+7,6
+and south to finish
+7,7

@@ -10,6 +10,8 @@ import java.util.Scanner;
 public class GraphExample {
     public static void main(String[] args) throws FileNotFoundException {
 
+        /** Undirected Graph Solution */
+        /*
         // create graph
         UndirectedGraph u = new UndirectedGraph();
 
@@ -41,13 +43,60 @@ public class GraphExample {
             System.out.println("File read error. Check format.");
         }
 
-
-        //u.display();
         u.breadthFirstSearch("(0,0)");
+        u.displayBFS();
         u.printPath("(0,0)", "(7,7)");
 
         // clear information
         u.clear();
+
+         */
+
+        /** Directed Graph Solution */
+
+        // create directed graph
+        DirectedGraph g = new DirectedGraph();
+
+        // add edges from file
+        try {
+
+            // create needed objects
+            File mazeEdges = new File("res\\directedMazeEdges.txt");
+            Scanner myScanner = new Scanner(mazeEdges);
+
+            // read file to edges
+            while (myScanner.hasNextLine()) {
+                String vertex1 = "(" + myScanner.nextLine() + ")";
+                String action = myScanner.nextLine();
+                String vertex2 = "(" + myScanner.nextLine() + ")";
+
+                // skip separating line (and potential descriptions)
+                if (myScanner.hasNextLine()) {  // enclosed in if statement so a whitespace line is not required at end of .txt
+                    myScanner.nextLine();
+                }
+
+                // add file information to graph
+                g.addEdge(vertex1, vertex2, action);
+            }
+
+            // close file
+            myScanner.close();
+
+        } catch(FileNotFoundException e) {
+            System.out.println("File read error. Check format.");
+        }
+        g.addVertex("(7,7)");
+
+        g.display();
+
+        g.breadthFirstSearch("(0,0)");
+        g.printPath("(0,0)", "(7,7)");
+        System.out.println();
+
+
+        // clear information
+        g.clear();
+
 
 
 
