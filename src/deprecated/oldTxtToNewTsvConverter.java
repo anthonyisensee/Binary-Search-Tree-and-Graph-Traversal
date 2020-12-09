@@ -7,6 +7,7 @@ import java.util.Scanner;
 /**
  * A class to convert my old .txt file to a more readable and usable .tsv file. Honestly it was probably harder to write
  * this class than to just copy the data over myself by hand, but oh well. Such is code.
+ * @author Anthony Isensee
  */
 public class oldTxtToNewTsvConverter {
 
