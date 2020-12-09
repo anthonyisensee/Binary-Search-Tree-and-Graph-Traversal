@@ -45,7 +45,7 @@ public class GraphExample {
         }
 
         // TODO: Continue developing ability to easily import from file. Consider implementing .xls or .csv, more common file types
-        // TODO: Add ability to import lone vertices from same file same as edges
+        // TODO: Add ability to import lone vertices from same file same as edges, or figure out how to import an edge going both ways
         // add all end vertexes with no edges extending from them so that all points can be found.
         g.addVertex("(5,0)");
         g.addVertex("(7,0)");

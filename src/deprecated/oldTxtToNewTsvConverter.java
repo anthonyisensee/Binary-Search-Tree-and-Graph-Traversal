@@ -1,3 +1,5 @@
+package deprecated;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -63,8 +65,6 @@ public class oldTxtToNewTsvConverter {
                         "\t" + v2Array.get(i) +
                         "\t" + actionArray.get(i) +
                         "\t";   // TODO: Figure out how to eliminate needing this final tab
-
-                pw.write(data);
             }
             pw.close();
 
