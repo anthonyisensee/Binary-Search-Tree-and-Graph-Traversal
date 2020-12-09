@@ -23,15 +23,11 @@ public class GraphExample {
             Scanner myScanner = new Scanner(mazeEdges);
 
             // read file to edges
-            while (myScanner.hasNextLine()) {
-                String vertex1 = "(" + myScanner.nextLine() + ")";
-                String action = myScanner.nextLine();
-                String vertex2 = "(" + myScanner.nextLine() + ")";
-
-                // skip separating line (and potential descriptions)
-                if (myScanner.hasNextLine()) {  // enclosed in if statement so a whitespace line is not required at end of .txt
-                    myScanner.nextLine();
-                }
+            while (s.hasNextLine()) {
+                String vertex1 = s.next();
+                String vertex2 = s.next();
+                String action = s.next();
+                s.nextLine();
 
                 // add file information to graph
                 g.addEdge(vertex1, vertex2, action);
@@ -44,7 +40,8 @@ public class GraphExample {
             System.out.println("File read error. Check format.");
         }
 
-        // TODO: Implement functionality to read edges AND sole vertices from .txt or .csv file
+        // TODO: Continue developing ability to easily import from file. Consider implementing .xls or .csv, more common file types
+        // TODO: Add ability to import lone vertices from same file same as edges
         // add all end vertexes with no edges extending from them so that all points can be found.
         g.addVertex("(5,0)");
         g.addVertex("(7,0)");

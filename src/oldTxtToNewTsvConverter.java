@@ -53,14 +53,16 @@ public class oldTxtToNewTsvConverter {
 
             PrintWriter pw = new PrintWriter(new File("res\\directedMazeEdges.tsv"));
 
-            String header = "From\tTo\tAction";
+            String header = "From\tTo\tAction\tMake sure line ends with a separating tab!";
             pw.write(header);
 
             for (int i = 0; i < v1Array.size(); i++) {
                 String data =
                         "\n" + v1Array.get(i) +
                         "\t" + v2Array.get(i) +
-                        "\t" + actionArray.get(i);
+                        "\t" + actionArray.get(i) +
+                        "\t";   // TODO: Figure out how to eliminate needing this final tab
+
                 pw.write(data);
             }
             pw.close();
