@@ -1,6 +1,9 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
+import java.util.Scanner;
 
 /**
  * DirectedGraph Class
@@ -270,20 +273,22 @@ public class DirectedGraph {
     }
 
     public static void main(String[] args) {
-
+        /*
         DirectedGraph g = new DirectedGraph();
 
         g.addEdge("0", "1", "east to");
+        g.addEdge("1", "0", "west to");
         g.addEdge("1", "2", "south to");
+        g.addEdge("2", "1", "north to");
         g.addEdge("1", "3", "east to");
-        //g.addVertex("3");
-        g.addVertex("2");   // note that this vertex must be added to the system so the algorithm can actually find it
+        g.addEdge("3", "1", "west to");
 
         g.display();
         g.depthFirstSearch("0");
         g.printPath("0", "2");
         System.out.println();
+        g.clear();
 
-
+         */
     }
 }
