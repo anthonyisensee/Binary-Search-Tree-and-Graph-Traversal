@@ -29,7 +29,6 @@ public class DirectedGraph {
             weight = w;
         }
 
-
     }
     
     /** Vertex object contains all of the relevant information for a vertex */
@@ -208,7 +207,7 @@ public class DirectedGraph {
             System.out.println("No path from "+s.label+" to "+v.label+" exists");
         } else {
             printPath(s.label, v.parent);
-            System.out.print(", "+ v.parentAction + " " +v.label);
+            System.out.print(", "+ v.parentAction + " " + v.label);
         }
     }
     
@@ -243,10 +242,10 @@ public class DirectedGraph {
         // If it has been discovered, ignore it
         for(Edge e: u.adjacencyList){
             Vertex v = vertices.get(e.vertexLabel);
-            if (v.discovered == false){
+            if (v != null && v.discovered == false){
                 v.parent = u.label;
                 dfsVisit(v);
-                v.parentAction = u.parentAction;
+                v.parentAction = e.action;
             }
         }
         u.visited = true;
@@ -272,7 +271,6 @@ public class DirectedGraph {
 
     public static void main(String[] args) {
 
-
         DirectedGraph g = new DirectedGraph();
 
         g.addEdge("0", "1", "east to");
@@ -282,7 +280,7 @@ public class DirectedGraph {
         g.addVertex("2");   // note that this vertex must be added to the system so the algorithm can actually find it
 
         g.display();
-        g.breadthFirstSearch("0");
+        g.depthFirstSearch("0");
         g.printPath("0", "2");
         System.out.println();
 

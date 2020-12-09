@@ -10,7 +10,74 @@ import java.util.Scanner;
 public class GraphExample {
     public static void main(String[] args) throws FileNotFoundException {
 
-        /** Undirected Graph Solution */
+        /** Directed Graph Solution */
+
+        // create directed graph
+        DirectedGraph g = new DirectedGraph();
+
+        // add edges from file
+        try {
+
+            // create needed objects
+            File mazeEdges = new File("res\\directedMazeEdges.txt");
+            Scanner myScanner = new Scanner(mazeEdges);
+
+            // read file to edges
+            while (myScanner.hasNextLine()) {
+                String vertex1 = "(" + myScanner.nextLine() + ")";
+                String action = myScanner.nextLine();
+                String vertex2 = "(" + myScanner.nextLine() + ")";
+
+                // skip separating line (and potential descriptions)
+                if (myScanner.hasNextLine()) {  // enclosed in if statement so a whitespace line is not required at end of .txt
+                    myScanner.nextLine();
+                }
+
+                // add file information to graph
+                g.addEdge(vertex1, vertex2, action);
+            }
+
+            // close file
+            myScanner.close();
+
+        } catch(FileNotFoundException e) {
+            System.out.println("File read error. Check format.");
+        }
+
+        // TODO: Implement functionality to read edges AND sole vertices from .txt or .csv file
+        // add all end vertexes with no edges extending from them so that all points can be found.
+        g.addVertex("(5,0)");
+        g.addVertex("(7,0)");
+        g.addVertex("(0,2)");
+        g.addVertex("(7,4)");
+        g.addVertex("(5,7)");
+        g.addVertex("(7,7)");
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Using Breadth First Approach: ");
+        g.breadthFirstSearch("(0,0)");
+        g.printPath("(0,0)", "(7,7)");
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Using Depth First Approach: ");
+        g.depthFirstSearch("(0,0)");
+        g.printPath("(0,0)", "(7,7)");
+        System.out.println();
+        System.out.println();
+
+        System.out.println("Alternate Coordinates: ");
+        g.depthFirstSearch("(0,0)");
+        g.printPath("(0,0)", "(7,0)");
+        System.out.println();
+        System.out.println();
+
+        // clear all information
+        g.clear();
+
+
+        /* Undirected Graph Solution */
         /*
         // create graph
         UndirectedGraph u = new UndirectedGraph();
@@ -52,57 +119,12 @@ public class GraphExample {
 
          */
 
-        /** Directed Graph Solution */
-
-        // create directed graph
-        DirectedGraph g = new DirectedGraph();
-
-        // add edges from file
-        try {
-
-            // create needed objects
-            File mazeEdges = new File("res\\directedMazeEdges.txt");
-            Scanner myScanner = new Scanner(mazeEdges);
-
-            // read file to edges
-            while (myScanner.hasNextLine()) {
-                String vertex1 = "(" + myScanner.nextLine() + ")";
-                String action = myScanner.nextLine();
-                String vertex2 = "(" + myScanner.nextLine() + ")";
-
-                // skip separating line (and potential descriptions)
-                if (myScanner.hasNextLine()) {  // enclosed in if statement so a whitespace line is not required at end of .txt
-                    myScanner.nextLine();
-                }
-
-                // add file information to graph
-                g.addEdge(vertex1, vertex2, action);
-            }
-
-            // close file
-            myScanner.close();
-
-        } catch(FileNotFoundException e) {
-            System.out.println("File read error. Check format.");
-        }
-        g.addVertex("(7,7)");
-
-        g.display();
-
-        g.breadthFirstSearch("(0,0)");
-        g.printPath("(0,0)", "(7,7)");
-        System.out.println();
-
-
-        // clear information
-        g.clear();
 
 
 
 
-
+        /* Given Examples */
         /*
-
         UndirectedGraph g = new UndirectedGraph();
         g.addEdge("alice", "bob");
         g.addEdge("alice", "carol");
@@ -144,9 +166,6 @@ public class GraphExample {
         g.printPath("s", "d");
         System.out.println();    
         g.clear();
-
-
-
          */
     } 
 }
