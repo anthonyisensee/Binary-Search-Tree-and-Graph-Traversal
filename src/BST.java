@@ -1,9 +1,9 @@
 /**
+ *  Author(s): Source Code Creator, Anthony Isensee
  *  Compilation:  javac BST.java
  *  Execution:    java BST
  *  Dependencies: StdIn.java StdOut.java Queue.java
  *  Data files:   http://algs4.cs.princeton.edu/32bst/tinyST.txt
- *  Author(s): Source Code Creator, Anthony Isensee
  *
  *  A symbol table implemented with a binary search tree.
  *
