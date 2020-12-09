@@ -18,9 +18,13 @@ public class GraphExample {
         // add edges from file
         try {
 
-            // create needed objects
-            File mazeEdges = new File("res\\directedMazeEdges.txt");
-            Scanner myScanner = new Scanner(mazeEdges);
+            File mazeEdges = new File("res\\directedMazeEdges.tsv");
+
+            // set up scanner
+            Scanner s = new Scanner(mazeEdges);
+            s.useDelimiter("\t");   // separation we're looking for
+            s.nextLine();           // skip .tsv header
+
 
             // read file to edges
             while (s.hasNextLine()) {
@@ -34,7 +38,7 @@ public class GraphExample {
             }
 
             // close file
-            myScanner.close();
+            s.close();
 
         } catch(FileNotFoundException e) {
             System.out.println("File read error. Check format.");
